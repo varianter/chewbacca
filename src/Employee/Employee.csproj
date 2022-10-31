@@ -21,4 +21,8 @@
       <ProjectReference Include="..\CvPartner\CvPartner.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Models" />
+    </ItemGroup>
+
 </Project>

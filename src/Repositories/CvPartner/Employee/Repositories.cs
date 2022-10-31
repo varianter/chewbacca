@@ -1,4 +1,4 @@
-﻿using CvPartner.DTOs;
+using CvPartner.DTOs;
 using CvPartner.Utils;
 
 using Microsoft.Extensions.Options;
@@ -6,13 +6,14 @@ using Microsoft.Extensions.Options;
 using Refit;
 
 using Shared;
-namespace CvPartner;
 
-public class CVPartnerRepository
+namespace Repositories.CvPartner.Employee;
+
+public class Repositories
 {
     private readonly IOptionsSnapshot<AppSettings> _appSettings;
 
-    public CVPartnerRepository(IOptionsSnapshot<AppSettings> appSettings)
+    public Repositories(IOptionsSnapshot<AppSettings> appSettings)
     {
         _appSettings = appSettings;
     }
