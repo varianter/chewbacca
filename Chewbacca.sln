@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bemanning", "src\Bemanning\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchestrator", "src\Orchestrator\Orchestrator.csproj", "{8F20927C-B300-4C59-85B5-97108B7CCC58}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invoicing", "src\Invoicing\Invoicing.csproj", "{DE163242-667D-4ADE-9E0A-68AAD60CFEAE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,7 @@ Global
 		{ADE440BB-E9CA-4744-9B06-9675A7546DE1} = {C7322BF8-CA3C-48D3-A0AC-0D614298E2FA}
 		{704068C4-40D5-48A4-BA12-E9443BEAAE6E} = {4E8641E8-6B67-433E-BB1D-78C361EB5D1F}
 		{8F20927C-B300-4C59-85B5-97108B7CCC58} = {C7322BF8-CA3C-48D3-A0AC-0D614298E2FA}
+		{DE163242-667D-4ADE-9E0A-68AAD60CFEAE} = {C7322BF8-CA3C-48D3-A0AC-0D614298E2FA}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B359FB31-4703-47B0-B2AA-4F6A135DAB68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -64,5 +67,9 @@ Global
 		{8F20927C-B300-4C59-85B5-97108B7CCC58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F20927C-B300-4C59-85B5-97108B7CCC58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F20927C-B300-4C59-85B5-97108B7CCC58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE163242-667D-4ADE-9E0A-68AAD60CFEAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE163242-667D-4ADE-9E0A-68AAD60CFEAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE163242-667D-4ADE-9E0A-68AAD60CFEAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE163242-667D-4ADE-9E0A-68AAD60CFEAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

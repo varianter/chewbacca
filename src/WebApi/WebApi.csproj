@@ -26,12 +26,13 @@
   </ItemGroup>
     
   <ItemGroup>
-    <ProjectReference Include="..\Bemanning\Bemanning.csproj"/>
-    <ProjectReference Include="..\Employees\Employees.csproj"/>
-    <ProjectReference Include="..\Shared\Shared.csproj"/>
-    <ProjectReference Include="..\Orchestrator\Orchestrator.csproj"/>
-    <ProjectReference Include="..\BlobStorage\BlobStorage.csproj"/>
-    <ProjectReference Include="..\CvPartner\CvPartner.csproj"/>
+    <ProjectReference Include="..\Bemanning\Bemanning.csproj" />
+    <ProjectReference Include="..\Employees\Employees.csproj" />
+    <ProjectReference Include="..\Invoicing\Invoicing.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+    <ProjectReference Include="..\Orchestrator\Orchestrator.csproj" />
+    <ProjectReference Include="..\BlobStorage\BlobStorage.csproj" />
+    <ProjectReference Include="..\CvPartner\CvPartner.csproj" />
   </ItemGroup>
     
   <ItemGroup>
