@@ -1,3 +1,4 @@
+using Employees.Models;
 using Employees.Repositories;
 
 using FluentAssertions;
@@ -32,12 +33,12 @@ public class EmployeeTest :
     public async void Given_EmployeeExists_When_CallingEmployeeControllerGET_Then_ReturnsSampleData()
     {
         // Arrange
-        var knownSeedData = Seed.GetSeedingEmployees();
+        var knownSeedData = Utilities.GetSeedingEmployees();
 
         // Act
         var employeeResponse = await _client.GetAsync("/Employee");
         var content =
-            JsonConvert.DeserializeObject<List<Employees.Models.Employee>>(await employeeResponse.Content
+            JsonConvert.DeserializeObject<List<Employee>>(await employeeResponse.Content
                 .ReadAsStringAsync());
 
         // Assert

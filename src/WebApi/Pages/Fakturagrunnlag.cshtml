@@ -1,0 +1,44 @@
+﻿@page
+@model WebApi.Fakturagrunnlag
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="no">
+<head>
+    <title>Fakturagrunnlag</title>
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/fakturagrunnlag.css"/>
+</head>
+<body>
+<page size="A4" layout="landscape">
+<div class="container">
+    <div class="header">
+        <h1>
+            <b>Timerapport</b>
+        </h1>
+        <h2>Kundenavn: Variant</h2>
+        <h2>Prosjekt: Prosjektledelse</h2>
+        <h3>Periode: November 2022</h3>
+    </div>
+    <div class="imageContainer">
+        <img src="images/variant.png" alt="Variant logo"/>
+    </div>
+</div>
+<table>
+    <tr>
+        <th>Navn</th><th>1</th><th>2</th><th>3</th><th>4</th><th class="weekend">5</th><th class="weekend">6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th class="weekend">12</th><th class="weekend">13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th class="weekend">19</th><th class="weekend">20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th class="weekend">26</th><th class="weekend">27</th><th>28</th><th>29</th><th>30</th><th>Sum</th>
+    </tr>
+    <tr class="users">
+        <td>Konsulent Konsulentesen</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>7,5</td><td>7,5</td><td>7,5</td><td>-</td><td>-</td><td>7,5</td><td>7,5</td><td>7,5</td><td>45</td>
+    </tr>
+    <tr class="lastRow">
+        <td>Sum</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>7,5</td><td>7,5</td><td>7,5</td><td>-</td><td>-</td><td>7,5</td><td>7,5</td><td>7,5</td> <td class="sum">45</td>
+    </tr>
+</table>
+</page>
+</body>
+</html>

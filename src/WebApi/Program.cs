@@ -11,6 +11,8 @@ using CvPartner.Service;
 using Employees.Repositories;
 using Employees.Service;
 
+using Invoicing;
+
 using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +27,6 @@ using Shared.AzureIdentity;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -43,6 +44,7 @@ builder.Configuration
 var appSettingsSection = builder.Configuration
     .GetSection("AppSettings");
 var appSettings = appSettingsSection.Get<AppSettings>();
+
 
 builder.Services.AddSingleton(new AzureServiceTokenProvider());
 
@@ -62,9 +64,14 @@ builder.Services.AddScoped<IBlobStorageRepository, BlobStorageRepository>();
 builder.Services.AddScoped<OrchestratorService>();
 builder.Services.AddScoped<OrchestratorRepository>();
 
+// Invoicing
+builder.Services.AddScoped<HarvestService>();
+
 // Refit
 builder.Services.AddRefitClient<ICvPartnerApiClient>()
     .ConfigureHttpClient(c => c.BaseAddress = appSettings.CvPartner.Uri);
+builder.Services.AddRefitClient<IHarvestApiClient>()
+    .ConfigureHttpClient(c => c.BaseAddress = appSettings.Invoicing.Uri);
 
 if (appSettings.UseAzureAppConfig)
 {
@@ -87,6 +94,8 @@ builder.Services.AddDbContextPool<EmployeeContext>(options =>
     options.AddInterceptors(new AzureAdAuthenticationDbConnectionInterceptor());
 });
 
+builder.Services.AddRazorPages();
+
 var app = builder.Build();
 
 /*
@@ -107,6 +116,7 @@ using (var scope = app.Services.CreateScope())
 // Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI();
+app.UseStaticFiles();
 
 if (appSettings.UseAzureAppConfig)
 {
@@ -117,6 +127,7 @@ app.UseAuthorization();
 
 app.MapGet("/", () => "Hello World!");
 app.MapControllers();
+app.MapRazorPages();
 
 app.Run();
 

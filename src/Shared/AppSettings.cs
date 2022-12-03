@@ -1,8 +1,9 @@
 ﻿namespace Shared;
 
-public record Healthcheck {
-    public bool KeyVault { get; set; } 
-    public bool AppConfig { get; set; } 
+public record Healthcheck
+{
+    public bool KeyVault { get; set; }
+    public bool AppConfig { get; set; }
 }
 
 public record CvPartnerConfig
@@ -17,6 +18,20 @@ public record BlobStorageConfig
     public string ContainerName { get; set; }
 }
 
+public record InvoicingConfig
+{
+    public Uri Uri { get; set; }
+    public HarvestConfig Oslo { get; set; }
+    public HarvestConfig Trondheim { get; set; }
+    public HarvestConfig Bergen { get; set; }
+}
+
+public record HarvestConfig
+{
+    public string AccountId { get; set; }
+    public string AccessToken { get; set; }
+}
+
 public record AppSettings
 {
     public Uri AzureAppConfigUri { get; set; }
@@ -25,4 +40,5 @@ public record AppSettings
     public CvPartnerConfig CvPartner { get; set; }
     public string BemanningConnectionString { get; set; }
     public BlobStorageConfig BlobStorage { get; set; }
+    public InvoicingConfig Invoicing { get; set; }
 }
