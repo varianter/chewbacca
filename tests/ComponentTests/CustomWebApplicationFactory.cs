@@ -9,6 +9,9 @@ using CvPartner.Repositories;
 
 using Employees.Repositories;
 
+using SoftRig.Service;
+using SoftRig.Models;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -61,6 +64,13 @@ public class CustomWebApplicationFactory<TStartup>
                     client.SaveToBlob(It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync("test");
             services.Replace(ServiceDescriptor.Transient(_ => blobStorageServiceMock.Object));
+
+            // Creates mock of SoftRigService
+            var softRigServiceMock = Mocker.GetMock<ISoftRigService>();
+            softRigServiceMock.Setup(client => client.GetSoftRigEmployees()).ReturnsAsync(new List<SoftRigEmployee>());
+            softRigServiceMock.Setup(client => client.UpdateEmployee(It.IsAny<string>(), It.IsAny<SoftRigEmployeeDto>())).ReturnsAsync(true);
+            services.Replace(ServiceDescriptor.Transient(_ => softRigServiceMock.Object));
+
         });
     }
 }

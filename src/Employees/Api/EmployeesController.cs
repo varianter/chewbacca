@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 using Employees.Service;
+using SoftRig.Service;
 
 using Microsoft.AspNetCore.OutputCaching;
 
@@ -14,11 +15,13 @@ namespace Employees.Api;
 public class EmployeesController : ControllerBase
 {
     private readonly EmployeesService _employeeService;
+    private readonly ISoftRigService _softRigService;
     private readonly ILogger<EmployeesController> _logger;
 
-    public EmployeesController(EmployeesService employeeService, ILogger<EmployeesController> logger)
+    public EmployeesController(EmployeesService employeeService, ISoftRigService softRigService, ILogger<EmployeesController> logger)
     {
         this._employeeService = employeeService;
+        this._softRigService = softRigService;
         this._logger = logger;
     }
 
@@ -82,12 +85,27 @@ public class EmployeesController : ControllerBase
         var updateSuccess = await _employeeService.UpdateEmployeeInformationByAliasAndCountry(alias, country, employeeInformation);
         if (updateSuccess)
         {
+
+            // Transform to SoftRigEmployeeDto to avoid circular dependencies
+            var employeeInformationDto = new SoftRig.Models.SoftRigEmployeeDto
+            {
+                Phone = employeeInformation.Phone,
+                AccountNumber = employeeInformation.AccountNumber,
+                Address = employeeInformation.Address,
+                ZipCode = employeeInformation.ZipCode,
+                City = employeeInformation.City
+            };
+
+            // Update in SoftRig
+            var updateSuccessInSoftRig = await _softRigService.UpdateEmployee($"{alias}@variant.{country}", employeeInformationDto);
+
             return NoContent();
         }
 
+        // TODO: move this error to where the check is, since updateSuccess also returns false if no lines changed
         _logger.LogError(
-            "Can't update EmployeeInformation because there is no matching Employee to alias {alias} and country {country}",
-            alias, country);
+                "Can't update EmployeeInformation because there is no matching Employee to alias {alias} and country {country}",
+                alias, country);
         return NotFound();
     }
 

@@ -1,5 +1,5 @@
 using Bemanning.Repositories;
-
+using SoftRig.Service;
 using BlobStorage.Service;
 
 using CvPartner.Service;
@@ -16,6 +16,7 @@ public class OrchestratorService
     private readonly EmployeesService _employeesService;
     private readonly CvPartnerService _cvPartnerService;
     private readonly IBemanningRepository _bemanningRepository;
+    private readonly ISoftRigService _softRigService;
     private readonly BlobStorageService _blobStorageService;
     private readonly ILogger<OrchestratorService> _logger;
     private readonly FilteredUids _filteredUids;
@@ -24,11 +25,13 @@ public class OrchestratorService
         IBemanningRepository bemanningRepository,
         BlobStorageService blobStorageService,
         FilteredUids filteredUids,
-        ILogger<OrchestratorService> logger)
+        ILogger<OrchestratorService> logger,
+        ISoftRigService softRigService)
     {
         _employeesService = employeesService;
         _cvPartnerService = cvPartnerService;
         _bemanningRepository = bemanningRepository;
+        _softRigService = softRigService;
         _blobStorageService = blobStorageService;
         _logger = logger;
         _filteredUids = filteredUids;
@@ -39,12 +42,14 @@ public class OrchestratorService
         _logger.LogInformation("OrchestratorRepository: FetchMapAndSaveEmployeeData: Started");
         var bemanningEntries = await _bemanningRepository.GetBemanningDataForEmployees();
         var cvEntries = await _cvPartnerService.GetCvPartnerEmployees();
+        var softRigEmployees = await _softRigService.GetSoftRigEmployees();
 
         var phoneNumberUtil = PhoneNumbers.PhoneNumberUtil.GetInstance();
 
         foreach (var bemanning in bemanningEntries.Where(IsActiveEmployee))
         {
             var cv = cvEntries.Find(cv => cv.email.ToLower().Trim() == bemanning.Email.ToLower().Trim());
+            var matchingSoftRigEmployee = softRigEmployees.Find(employee => employee.BusinessRelationInfo!.DefaultEmail!.EmailAddress.ToLower().Trim() == bemanning.Email.ToLower().Trim());
 
             if (cv != null)
             {
@@ -57,7 +62,7 @@ public class OrchestratorService
 
                 var isFilteredPhone = _filteredUids.Uids.Contains(cv.user_id);
 
-                await _employeesService.AddOrUpdateEmployee(new EmployeeEntity
+                var employee = new EmployeeEntity
                 {
                     Name = cv.name,
                     Email = cv.email,
@@ -70,7 +75,19 @@ public class OrchestratorService
                     StartDate = bemanning.StartDate,
                     EndDate = bemanning.EndDate,
                     CountryCode = countryCode.ToLower()
-                });
+                };
+
+                if (matchingSoftRigEmployee != null)
+                {
+                    var softRigEmployeeDto = SoftRig.Models.ModelConverters.ToEmployeeDto(matchingSoftRigEmployee);
+                    employee.AccountNumber = softRigEmployeeDto!.AccountNumber;
+                    employee.Address = softRigEmployeeDto!.Address;
+                    employee.ZipCode = softRigEmployeeDto!.ZipCode;
+                    employee.City = softRigEmployeeDto!.City;
+                }
+
+
+                await _employeesService.AddOrUpdateEmployee(employee);
             }
             else
             {

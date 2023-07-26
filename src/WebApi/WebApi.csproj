@@ -21,11 +21,11 @@
       <PackageReference Include="Refit" Version="6.3.2" />
       <PackageReference Include="Refit.HttpClientFactory" Version="6.3.2" />
   </ItemGroup>
-    
+
   <ItemGroup>
     <InternalsVisibleTo Include="IntegrationTests" />
   </ItemGroup>
-    
+
   <ItemGroup>
     <ProjectReference Include="..\Bemanning\Bemanning.csproj" />
     <ProjectReference Include="..\Employees\Employees.csproj" />
@@ -33,5 +33,6 @@
     <ProjectReference Include="..\Orchestrator\Orchestrator.csproj" />
     <ProjectReference Include="..\BlobStorage\BlobStorage.csproj" />
     <ProjectReference Include="..\CvPartner\CvPartner.csproj" />
+    <ProjectReference Include="..\SoftRig\SoftRig.csproj" />
   </ItemGroup>
 </Project>

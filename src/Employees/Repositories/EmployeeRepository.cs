@@ -47,8 +47,10 @@ public class EmployeesRepository
             updateEmployee.StartDate = employee.StartDate;
             updateEmployee.EndDate = employee.EndDate;
             updateEmployee.CountryCode = employee.CountryCode;
-            // Don't set Address, AccountNumber, ZipCode and City since these aren't fetched from external sources,
-            // and hence the information given from variantdash will be overwritten
+            updateEmployee.AccountNumber = employee.AccountNumber;
+            updateEmployee.Address = employee.Address;
+            updateEmployee.City = employee.City;
+            updateEmployee.ZipCode = employee.ZipCode;
         }
         else
         {

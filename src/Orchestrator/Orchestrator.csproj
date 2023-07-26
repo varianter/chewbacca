@@ -11,6 +11,7 @@
         <ProjectReference Include="..\CvPartner\CvPartner.csproj" />
         <ProjectReference Include="..\Employees\Employees.csproj" />
         <ProjectReference Include="..\BlobStorage\BlobStorage.csproj" />
+        <ProjectReference Include="..\SoftRig\SoftRig.csproj" />
     </ItemGroup>
     
     <ItemGroup>
