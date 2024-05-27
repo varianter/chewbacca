@@ -34,6 +34,7 @@ public class ProjectExperience
     public List<ProjectExperienceRole> Roles { get; init; } = new();
 
     public HashSet<string> Competencies { get; init; } = new();
+    public int? Rank {get; set; }
 }
 
 public class ProjectExperienceRole

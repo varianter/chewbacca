@@ -410,19 +410,74 @@ public async Task AddOrUpdateCvInformation(List<Cv> cvs)
     public async Task<List<ProjectExperience>> GetProjectExperiencesByEmailAndCompetencies(string email,
         List<string> competencies)
     {
+        // Get the employee
         var employeeId = await _db.Employees
             .Where(emp => emp.Email == email)
             .Select(e => e.Id)
             .SingleOrDefaultAsync();
 
-        return await _db.ProjectExperiences
-            .Include(pe => pe.ProjectExperienceRoles)
-            .Include(pe => pe.Competencies)
-            .Where(pe =>
-                pe.EmployeeId == employeeId &&
-                _db.Competencies.Any(c => competencies.Contains(c.Name) && c.ProjectExperienceId == pe.Id))
-            .Select(pe => pe.ToProjectExperience())
-            .ToListAsync();
+        // Setup our ranking of competencies
+        List<(int, string)> competenciesLength = new List<(int, string)>();
+
+        // Calculate how long the employee has worked with each competency
+        foreach (var competence in competencies)
+        {
+            // Get project experiences for each competency
+            var projectExperiences = await _db.ProjectExperiences
+                .Include(pe => pe.ProjectExperienceRoles)
+                .Include(pe => pe.Competencies)
+                .Where(pe =>
+                    pe.EmployeeId == employeeId &&
+                    _db.Competencies.Any(c => competence.Contains(c.Name) && c.ProjectExperienceId == pe.Id))
+                .Select(pe =>  pe.ToProjectExperience())
+                .ToListAsync();
+
+            // Sum all project lengths for each competency
+            TimeSpan totalCompetenceExperience = projectExperiences.Aggregate(TimeSpan.Zero, (currentTotal, projectexpreience) => {
+                DateOnly fromDate = projectexpreience.FromDate ?? DateOnly.FromDateTime(DateTime.Now);
+                TimeSpan interval = projectexpreience.ToDate.ToDateTime(TimeOnly.MinValue) - fromDate.ToDateTime(TimeOnly.MinValue);
+                return currentTotal + interval;
+            });
+
+            // Set num years for each competency
+            competenciesLength.Add((((int)totalCompetenceExperience.TotalDays)/365, competence));
+
+        }
+
+        // Sort our ranking by num years
+        competenciesLength.Sort((x, y) => x.Item1.CompareTo(y.Item1));
+
+        // Create set to be returned
+        HashSet<ProjectExperience> uniqueProjects = new HashSet<ProjectExperience>();
+
+        // Set the rank on each project based on the "best" competency in that project
+        for (int i = 0; i < competenciesLength.Count; i++)
+        {
+            // Get projects based on the competence
+            var competence = competenciesLength[i].Item2;
+            var projectExperiences = await _db.ProjectExperiences
+                .Include(pe => pe.ProjectExperienceRoles)
+                .Include(pe => pe.Competencies)
+                .Where(pe =>
+                    pe.EmployeeId == employeeId &&
+                    _db.Competencies.Any(c => competence.Contains(c.Name) && c.ProjectExperienceId == pe.Id))
+                .Select(pe => pe.ToProjectExperience())
+                .ToListAsync();
+
+            // Set rank corresponding to competence on projects
+            // Only update rank if it improves the project
+            foreach( var projectExperience in projectExperiences ) {
+                projectExperience.Rank = projectExperience.Rank ?? 0;
+                if( competenciesLength[i].Item1 > projectExperience.Rank) {
+                    projectExperience.Rank = i;
+                }
+
+                // Add the project to be returned
+                uniqueProjects.Add(projectExperience);
+            }
+        }
+
+        return uniqueProjects.ToList();
     }
 
     public async Task<List<string>> GetAllCompetencies(string? email)
