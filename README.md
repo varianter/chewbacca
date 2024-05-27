@@ -34,6 +34,8 @@ Man kan da få konfigurasjon og secrets fra azure uten noe ekstra oppsett gjenno
 
 For å gjøre kall til endepunkter som er bak _auth_ kan man kjøre `az account get-access-token --scope api://chewbacca/employees` for å få et gyldig token. Man kan da trykke Authorize knappen øverst til høyre i Swagger UI på `/swagger/index.html` og lime inn tokenet der: `Bearer <token>`. Man kan da kalle de låste endepunktene.
 
+For å populere den lokale databasen må du kjøre `/Orchestrator`-endepunktet i Swagger UI.
+
 Om man lager en App Registration i vår Azure Tenant hvor access token skal kunne brukes til å hente data fra Chewbacca må man huske å legge til scopet `api://chewbacca/employees` under API Permissions og få det godkjent av en Administrator.
 
 ## Infrastructure
