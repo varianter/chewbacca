@@ -25,7 +25,7 @@ For å kjøre migrering til Employees-databasen
 For å få tilgang til integrasjoner må man ha:
 
 1. En variant-bruker/epost
-2. Blitt lagt til i _developers_ gruppen i Azure AD
+2. Blitt lagt til i _developers_ gruppen i Microsoft Entra ID (tidligere kalt Azure AD)
 3. Installert _Azure CLI_ og kjørt `az login`
 
 Man kan da få konfigurasjon og secrets fra azure uten noe ekstra oppsett gjennom Azure App Configuration. Når man utvikler kjører man opp SQL Server og Blob Storage lokalt, siden det er disse to tjenestene som skrives til - så de er grei å ha kontroll på selv. De er definert i `docker-compose.yml`. Installer Docker Desktop og kjør `docker-compose up -d`.
@@ -65,3 +65,20 @@ kan man be MSBuild bygge uten å bruke språkavhengig formatering for tekster, d
 
 
 Man kan også sette `DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1` som en miljøvariabel for utviklermaskinen, og dermed slipp å oppgi variablen i selve byggkommandoen.
+
+### "The following tenants don't contain accessible subscriptions"
+
+Når du logger inn med az login, sjekkes det om du er med i _developers_ gruppen i Microsoft Entra ID (tidligere kalt Azure AD). Dersom du har forsøkt å logge inn _før_ du er medlem i gruppa, kan cachen være feil.
+
+**Løsning**
+
+Dersom du ikke er med å gruppa, må du be noen om å legge deg til. Hvis problemet er med cache, kan du prøve å kjøre `az account clear` og så logge på igjen. Mer informasjon finnes eventuelt [her](https://learn.microsoft.com/en-us/cli/azure/manage-azure-subscriptions-azure-cli?tabs=bash#clear-your-subscription-cache).
+
+
+### "Could not open a connection to SQL Server" eller AzureSQL edge-container i Docker feiler
+
+Ved oppsett av prosjektet oppstår det feil med å koble til SQL serveren. Dette kan gi feil ved tilkobling eller hvis man sjekker Docker.
+
+**Løsning**
+
+Nyeste versjon (4.38.0)  av Docker Desktop fungerte ikke i skrivende stund. [Versjon 4.32.0](https://docs.docker.com/desktop/release-notes/#4320) fungerte derimot fint.

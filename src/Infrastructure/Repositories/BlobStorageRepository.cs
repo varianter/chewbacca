@@ -88,7 +88,8 @@ public class BlobStorageRepository : IBlobStorageRepository
             return null;
         }
 
-        var lastModified = response.Content.Headers.LastModified.ToString() ?? DateTimeOffset.Now.ToString(CultureInfo.InvariantCulture);
+        var lastModifiedDate = response.Content.Headers.LastModified ?? DateTimeOffset.UtcNow;
+        var lastModified = lastModifiedDate.ToString(CultureInfo.InvariantCulture);
         var stream = await blockBlobClient.OpenWriteAsync(true);
         await response.Content.CopyToAsync(stream);
         await stream.FlushAsync();
@@ -100,7 +101,7 @@ public class BlobStorageRepository : IBlobStorageRepository
             { "name", cvPartnerUserId }, { BlobMetadataLastModifiedKey, lastModified }
         });
 
-        return blockBlobClient.Uri.AbsoluteUri;
+    return blockBlobClient.Uri.AbsoluteUri;
     }
 
     private async Task<BlobContainerClient> GetBlobContainerClient()
