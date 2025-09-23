@@ -2,6 +2,12 @@ using ApplicationCore.Models;
 
 namespace Web.ViewModels;
 
+public record EmployeesExtendedJson
+{
+    public required IEnumerable<EmployeeExtendedJson> Employees { get; init; }
+};
+
+
 public record EmployeeExtendedJson
 {
     public required string Email { get; init; }
@@ -11,6 +17,7 @@ public record EmployeeExtendedJson
     public string? ImageThumbUrl { get; set; }
     public required string OfficeName { get; set; }
     public DateTime StartDate { get; set; }
+    public DateTime? EndDate { get; set; }
     public required IEnumerable<string> Competences { get; set; }
     public string? AccountNumber { get; init; }
     public string? Address { get; init; }

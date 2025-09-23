@@ -30,6 +30,7 @@ public static class ModelConverters
             ImageThumbUrl = employee.EmployeeInformation.ImageThumbUrl,
             OfficeName = employee.EmployeeInformation.OfficeName,
             StartDate = employee.EmployeeInformation.StartDate,
+            EndDate = employee.EmployeeInformation.EndDate,
             Competences = employee.EmployeeInformation.Competences,
             AccountNumber = employee.EmployeeInformation.AccountNumber,
             Address = employee.EmployeeInformation.Address,

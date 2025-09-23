@@ -35,6 +35,18 @@ public class EmployeesController : ControllerBase
         var employees = await _employeeService.GetActiveEmployees(country);
         return new EmployeesJson { Employees = employees.Select(ModelConverters.ToEmployeeJson) };
     }
+    
+    /**
+    * <returns>a call to Service's GetActiveEmployees showing extended employee info</returns>
+    */
+    [EnableCors("DashCorsPolicy")]
+    [HttpGet("extended")]
+    [OutputCache(Duration = 60)]
+    public async Task<ActionResult<EmployeesExtendedJson>> GetExtended([FromQuery] string? country = null)
+    {
+        var employees = await _employeeService.GetActiveEmployees(country);
+        return new EmployeesExtendedJson { Employees = employees.Select(ModelConverters.ToEmployeeExtendedJson) };
+    }
 
     /**
      * <returns>a call to Service's GetByNameAndCountry</returns>
@@ -97,6 +109,7 @@ public class EmployeesController : ControllerBase
         }
         return ModelConverters.ToEmployeeExtendedJson(employee);
     }
+
 
     [EnableCors("DashCorsPolicy")]
     [HttpPost("emergencyContact/{country}/{alias}")]
