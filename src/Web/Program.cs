@@ -37,7 +37,7 @@ builder.Services.AddCors(options =>
             policy =>
             {
                 policy.AllowAnyMethod().AllowAnyHeader()
-                    .WithOrigins("https://dash.variant.no", "https://variantdash-dev.azurewebsites.net",
+                    .WithOrigins("https://dash.variant.no", "https://variantdash-dev.azurewebsites.net", "https://dash.dev.variant.dev",
                         "http://localhost:3000");
             });
     }
@@ -47,7 +47,7 @@ builder.Services.AddCors(options =>
             options.AddPolicy("DashCorsPolicy",
                 policy =>
                 {
-                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("https://dash.variant.no",
+                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("https://dash.variant.no","https://dash.dev.variant.dev"
                         "https://variantdash-dev.azurewebsites.net");
                 });
         }
@@ -269,4 +269,5 @@ namespace Web
     public partial class Program
     {
     }
+
 }
